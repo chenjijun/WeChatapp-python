@@ -1,3 +1,4 @@
+IP为X.X.X.X 需修改为自己的服务器地址
 一个简单的包裹登记程序（未完成），使用微信小程序做前端，python FASTAPI+UVICORN做后端，python tkinter做管理端，
 服务器使用 Oracle Always Free centos8 1G/1核（使用request 进行多线程测试同时发送500次新增订单请求未丢失）
 
