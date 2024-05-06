@@ -1,0 +1,18 @@
+<view class="container"  >  
+  
+  <image class="dlimage" src="{{topImgsrc}}" bindtap="showPopupImage"></image>
+
+  <view class="overlay" hidden="{{!showPopup}}" bindtap="hidePopupImage"></view>
+  <view class="overlay" mode="aspectFit" bindtap="hidePopupImage" class="popup-image" hidden="{{!showPopup}}" >
+  <image class="overlay-image" src="{{gimgsrc}}" ></image>
+</view>
+
+  <view class = "logintxt">登录</view> 
+  <form class = "formOne" bindsubmit="formSubmit">
+    <input class="required-input" name="username" placeholder="请输入用户名"/>
+    <input class="required-input" name="password" placeholder="请输入密码" password="true"/>
+    <button class="login " form-type="submit" hover-class="dianjixg">登录</button>
+  </form>
+  <button hover-class="dianjixg" class="zhuce"  bind:tap="onelogin" >一键登陆</button>
+  <button hover-class="dianjixg" class="zhuce"  bind:tap="sign" >注册</button>
+</view>

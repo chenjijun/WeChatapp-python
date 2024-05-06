@@ -1,0 +1,58 @@
+<view class = "fullpage">
+<scroll-view scroll-y="true" class="scroll-container">
+    <image src="{{topImgsrc}}" bind:tap="jiage"  class = "guang-gao"/>
+    <form class = "formOne" bindsubmit="handleSubmit" bindreset="hangleReset">
+     <view class="input-container1">
+      <text class="lableOne">你好： {{userInfo1}} </text>
+     </view>
+
+     <view class="input-container">
+  <text class="radio">请选择快递类型：(必选)</text>
+  <radio-group bindchange="kdTypeChange" name="kdType" class="radio-group">
+    <label class="radio-label">
+      <radio value="普通货">普通货  </radio>
+    </label>
+    <label class="radio-label">
+      <radio value="敏感货">敏感货  </radio>
+    </label>
+    <label class="radio-label">
+      <radio value="书籍">书籍  </radio>
+    </label>
+  </radio-group>
+</view>
+
+     <view class="input-container">
+      <text class="jiaMi">*  1.快递公司 （必填）</text>
+      <input class="required-input" name="kdgs" placeholder="请输入快递公司（2-10字符）"/>
+     </view>
+
+     <view class="input-container">
+      <text class="jiaMi">*  2.快递单号 （必填） </text>
+      <input class="required-input" name="danhao" placeholder="请输入快递单号（6-30字符）" value="{{kddh}}"/>
+     </view>
+     <button hover-class="dianjixg" class="kdcheck" bind:tap="saoMiao">点击扫描快递二维码</button>
+
+     <view class="input-container">
+      <text class="jiaMi">*  3.联系号码 （必填） </text>
+      <input class="required-input" name="lxhm" placeholder="请输入电话号码 （6-30字符）"/>
+     </view>
+
+     <view class="input-container">
+      <text class="lableOne">4.物品信息 </text>
+      <input class="required-input" name="wpxx" placeholder="请输入"/>
+     </view>
+
+     <view class="input-container">
+      <text class="lableOne">5.备注 </text>
+      <input class="required-input" name="beizhu" placeholder="请输入"/>
+     </view>
+
+     <button hover-class="dianjixg" class="tijiao " form-type="submit"  >提交</button>
+
+     <button hover-class="dianjixg" class="tijiao" bind:tap="tuiChu" style="position: relative; left: 1rpx; top: -30rpx">退出</button>
+     
+    
+    </form>
+
+</scroll-view>
+</view>

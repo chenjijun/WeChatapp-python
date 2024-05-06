@@ -1,0 +1,87 @@
+/* index/box.wxss */
+
+.fullpage {
+  min-height: 100vh;
+  background-color:#F2F2F2;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.addbox{
+  display: flex;
+  margin-left: 20px;
+  margin-top: 15px;
+  font-size: 20px;
+  height: 50px;
+  width: 90%;
+}
+.required-input {
+  height: 48px;
+  font-size: 20px;
+  border: 1px solid gray;
+  border-radius: 5px;
+
+}
+.pickerclass{
+  width: 55%;
+}
+.addboxbutton{
+  background-color: #278d04;
+  color: white;
+}
+
+.flashboxbutton{
+  background-color: #278d04;
+  color: white;
+  margin-top: 10px;
+  width: 90%;
+}
+.dianjixg{
+  background-color: rgb(6, 114, 38);
+  box-shadow:0px 0px 10px #4b3a3a inset; 
+}
+.boxcon{
+  background-color: #278d04;
+  color: white;
+  width: 30%;
+  
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明背景色 */
+  z-index: 9998;
+}
+
+.setviewbox{
+  background-color: white;
+  margin-top: 30%;
+  margin-left: 10%;
+  margin-right: 10%;
+  background-color:#F2F2F2;
+  border-radius: 20px;
+  height: 40%;
+}
+
+.settext{
+  font-size: 25px;
+  font-weight: bolder;
+}
+.enterquit{
+  margin-top: 30px;
+}
+.toptext{
+  font-size: 30px;
+  
+}
+.infotext{
+  font-size: 20px;
+  
+}
+.list{
+  margin-top: 20px;
+}
