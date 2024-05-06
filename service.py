@@ -1,7 +1,6 @@
 import asyncio
 import string
 import time
-
 from fastapi import FastAPI, File, Response, Request, Header
 import uvicorn
 import requests
@@ -92,37 +91,6 @@ async def wechat_login(request: Request,Authorization: Optional[str] = Header(No
                     valus = cursor.fetchall()
                     easyprint(valus)
                     if valus:
-                        # with sqlite3.connect('dingdan.db') as ddconn:
-                        #     cursor = ddconn.cursor()
-                        #     table_name = valus[0][1]
-                        #     try:
-                        #         cursor.execute(f"PRAGMA table_info({table_name})")
-                        #         results = cursor.fetchall()
-                        #         if results:
-                        #             print(f"Table {table_name} exists.")
-                        #         else:
-                        #             print(f"Table {table_name} does not exist.")
-                        #             cursor.execute(f'''
-                        #                            CREATE TABLE {table_name}(
-                        #                            id INTEGER PRIMARY KEY,
-                        #                            user TEXT,
-                        #                            leixing TEXT,
-                        #                            kdgs TEXT,
-                        #                            danhao TEXT,
-                        #                            wpxx TEXT,
-                        #                            status TEXT,
-                        #                            lxhm TEXT,
-                        #                            beizhu TEXT,
-                        #                            tianjiasj TEXT,
-                        #                            rukusj TEXT,
-                        #                            chukusj TEXT，
-                        #                            wanchengsj TEXT
-                        #                       );
-                        #                            ''')
-                        #             ddconn.commit()
-                        #     except sqlite3.OperationalError:
-                        #         print(f"Table {table_name} does not exist.")
-                        #         return {'return': 'Failed'}
                         return {'return': 'canpass', 'username': valus[0][1], 'user': valus[0][4], 'jifen': valus[0][3]}
                     else:
                         useradd = ''.join(random.choices(string.ascii_letters, k=3) +random.choices(string.digits, k=5))
