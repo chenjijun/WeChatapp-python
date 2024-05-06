@@ -3,17 +3,23 @@
  微信小程序端使用JavaScript，可注册账号密码进行登录OR调用微信OPENID自动创建账号（3个随机字符+5个随机数字）一键登录，
  管理员账号通过账户密码登录，账号密码验证通过后端服务器sqlite内容进行验证（未对密码进行加密）
  小程序内管理员可修改货物状态，查询所有货物，将货物加入箱号中
- 
  可点击首页图片可跳出价格图片
  使用微信条码扫描接口实现使用摄像头/相册图片自动识别输入快递单号
+
+ tkinter管理可操作订单、账号、箱信息等
 
 微信小程序：
 
 ![image](https://github.com/chenjijun/WeChatapp-python/assets/5528543/087ea6b9-0270-43f9-87a4-82cae31a3485)
 ![image](https://github.com/chenjijun/WeChatapp-python/assets/5528543/4b4e8d2f-b5ac-4c1e-8d5b-d94f07ba5d38)
 ![image](https://github.com/chenjijun/WeChatapp-python/assets/5528543/9a6cde48-df87-4f4c-aa0f-3f62ab0bcdb1)
-![image](https://github.com/chenjijun/WeChatapp-python/assets/5528543/b2e91724-a5a7-47ec-8081-2a459358b2a5)
 ![image](https://github.com/chenjijun/WeChatapp-python/assets/5528543/f716058e-61b1-4002-9dc4-32be3b1ac454)
-![image](https://github.com/chenjijun/WeChatapp-python/assets/5528543/925386af-2eb6-48f5-b0a2-cb6b28036308)
+
+python-tkinter：
+
+![image](https://github.com/chenjijun/WeChatapp-python/assets/5528543/36115c62-d127-4afb-a638-09810d866eb2)
+![image](https://github.com/chenjijun/WeChatapp-python/assets/5528543/494e734f-fe07-4faa-a029-280c513f96d5)
+![image](https://github.com/chenjijun/WeChatapp-python/assets/5528543/fa25587f-46f7-4d89-92c8-58c316ecaab1)
+
 
 
