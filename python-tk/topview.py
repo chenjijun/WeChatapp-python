@@ -1,7 +1,9 @@
- import tkinter as tk
+import tkinter as tk
 from tkinter import ttk
+
+
 class xiangxinxi(tk.Toplevel):
-    def __init__(self, master=None,data=[], **kw):
+    def __init__(self, master=None, data=[], **kw):
         super(xiangxinxi, self).__init__(master, **kw)
         self.title('详细信息')
         self.frame19 = ttk.Frame(self)
