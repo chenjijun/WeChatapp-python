@@ -1,0 +1,87 @@
+/* index/login.wxss */
+.container {
+  min-height: 100vh;
+  background-color:#F2F2F2;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  
+
+}
+.dlimage{
+  margin-left: 5%;
+  margin-top: 10px;
+  width: 90%;
+  border-radius: 20px;
+}
+.logintxt{
+  font-size: 30px;
+  margin-top: 5%;
+  margin-left: 20%;
+  font-weight: bolder; 
+}
+.required-input{
+  margin-left: 20%;
+  margin-top: 20px;  
+  border-radius: 5px; /* 可选：设置边框圆角 */  
+  padding: 5px; /* 可选：设置内边距，使内容不会紧贴边框 */  
+  width: 65%; /* 可选：设置输入框宽度为100%，根据需要调整 */  
+  box-sizing: border-box; /* 可选：确保边框和内边距不会增加输入框的总宽度 */  
+  height: 50px;
+  background-color: snow;
+  
+}
+.login{
+  margin-left: 20%;
+  margin-top: 20px;
+  width: 60%;
+  background-color: #00426eb9;
+  color: #F2F2F2;
+  border-radius: 20px;
+}
+.login-active{
+  background-color: #04446e;
+  
+}
+.zhuce{
+  margin-left: 20%;
+  margin-top: 20px;
+  width: 60%;
+  background-color: #00426eb9;
+  color: #F2F2F2;
+  border-radius: 20px;
+}
+
+.dianjixg{
+  background-color: rgb(3, 56, 100);
+  box-shadow:0px 0px 10px #4b3a3a inset; 
+}
+
+.popup-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明背景色 */
+  z-index: 9998;
+}
+
+.overlay-image {
+  display: flex;
+ 
+  margin:5% ;
+  height: 90%;
+  width: 90%;
+  
+}

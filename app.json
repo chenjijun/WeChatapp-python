@@ -1,0 +1,34 @@
+{
+  "pages": [
+    
+    "index/login",
+    "index/index",
+    "index/index2",
+    "index/signup",
+    "index/box"
+    
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#E6E6E6",
+    "navigationBarTitleText": "MY-APP",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "index/index",
+        "text": "首页",
+        "iconPath": "image/shouyeweixuanzhong-01.png",
+        "selectedIconPath": "image/shouye-01.png"
+      },
+      {
+        "pagePath": "index/index2",
+        "text": "我的",
+        "iconPath": "image/wodeweixuanzhong-01.png",
+        "selectedIconPath": "image/wodexuanzhong-01.png"
+      }
+    ]
+  }
+}

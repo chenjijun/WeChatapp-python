@@ -1,0 +1,88 @@
+<!--index/index2.wxml-->
+<scroll-view class="scroll1" scroll-y="true" scroll-x="true" enable-flex="true" refresher-triggered="{{ true }}">
+  <view class="txandname">
+    <image class="touxiang" src="/image/a-ziyuan106.png"></image>
+    <view class="userandjf" >
+    <text class="name">{{userInfo1}}</text>
+    <text class="name">用户积分： {{yhjifen1}}</text>
+    </view>
+  </view>
+  <view class ='ddcx' wx:if="{{useradmin1 === 'admin'}}">
+    <button class="twobutton" hover-class="dianjixg"  bind:tap="gotobox">箱货处理</button>
+</view>
+  <view class ='ddcx'>
+    <button class="twobutton" hover-class="dianjixg"  bind:tap="myHistory">添加记录</button>
+  <button class="twobutton" hover-class="dianjixg"  bind:tap="myHistoryunfinish" hover-stay-time="200">未完成</button>
+  <button class="twobutton"  hover-class="dianjixg" bind:tap="myHistoryfinish">已完成</button>
+</view>
+
+
+<view class ='usermohu' wx:if="{{useradmin1 != 'admin'}}">
+   <picker class="pickerclass" bindchange="bindPickerChange" value="{{index}}" range="{{userarray}}">  
+    <view class="picker" hover-class="dianjixg2">选择筛选条件：  当前''{{userarray[index]}}''</view>  
+  </picker>  
+  <view class="saixuan">
+  <input class="inputsh"  name="inputsh" placeholder="请输入" bindinput="bindInput"/>
+  <button class="mohu" hover-class="dianjixg"  bind:tap="mohu" >筛选</button>
+  <button class="mohu" hover-class="dianjixg"  bind:tap="reset" >重置</button>
+</view>
+
+</view>
+
+  
+  <view class="saomiao" wx:if="{{useradmin1 === 'admin'}}" >
+    <view class="section">  
+  <picker class="pickerclass" bindchange="bindPickerChange" value="{{index}}" range="{{array}}">  
+    <view class="picker" hover-class="dianjixg">选择筛选条件：  当前''{{array[index]}}''</view>  
+  </picker>  
+  <view class="saixuan">
+  <input class="inputsh"  name="inputsh" placeholder="请输入" bindinput="bindInput"/>
+  <button class="mohu" bind:tap="mohu" >筛选</button>
+  <button class="mohu" bind:tap="reset" >重置</button>
+</view>
+</view>
+ 
+  <view class = 'shouhuoview' wx:if="{{useradmin1 === 'admin'}}">
+  <button class="shouhuo" hover-class="dianjixg" bind:tap="saomiaosh" data-name="已入库">扫描入库</button>
+  <button class="shouhuo" hover-class="dianjixg" bind:tap="saomiaosh" data-name="已出库">扫描出库</button>
+</view>
+</view>
+<view class='count'>数量： {{listcount}}</view>
+<view class="list">
+  <block   wx:for='{{dataList}}' wx:key='list' wx:for-item="item" wx:for-index="idx">
+  <view   class="list_item" >
+    <view  class='info'  bindtap="toggleButton" data-index="{{idx}}" >
+      <view class='xinxi' style="margin-bottom: 5px;"><text style="font-weight: bold;">用户：{{item[1]}} </text> 
+      </view>
+      <view class='xinxi'>单号：{{item[4]}}</view>
+      <view class="xinxi">当前状态：{{item[6]}}</view>
+      <view class="yincang" wx:if="{{item.showButton && useradmin1 }}">
+        <view class='xinxi'>快递公司： {{item[3]}}</view>
+        <view class='xinxi'>联系号码：{{item[7]}}</view>
+        <view class='xinxi'>是否敏感货：{{item[2]}}</view>
+        <view class='xinxi'>物品信息：{{item[5]}}</view>
+        <view class='xinxi'>备注信息：{{item[8]}}</view>
+        <view class="xinxi">添加时间：{{item[9]}}</view>
+        
+        <view class="xinxi" wx:if="{{useradmin1 === 'admin'}}">入库时间：{{item[10]}}</view>
+        <view class="xinxi" wx:if="{{useradmin1 === 'admin'}}">出库时间：{{item[11]}}</view>
+        <view class="xinxi" wx:if="{{useradmin1 === 'admin'}}">箱号：{{item[12]}}</view>
+      </view>
+      <view class="jilushowbutton" wx:if="{{item.showButton && useradmin1 === 'admin'}}">
+        <button hover-class="dianjixg"  class="shouhuo" bind:tap="sdruku" data-index="{{idx}}">手动入库</button>  
+        <button hover-class="dianjixg"  class="shouhuo" bind:tap="sdchuku" data-index="{{idx}}">手动出库</button> 
+      </view>
+        
+        
+      </view>
+     
+      
+      
+  </view>
+  </block>
+
+</view>
+
+
+
+</scroll-view>

@@ -1,0 +1,29 @@
+<!--index/signup.wxml-->
+<view class="zhuceview">
+  <text class="zhucetxt">注册</text>
+  <form class="zhucetijiao" bindsubmit="onSign" >
+    <view class="input">
+    <text class="usertxt">1.用户名 3-15字符</text>
+    <input class="required-input" name="username" placeholder="请输入用户名"/>
+    </view>
+    <view class="input">
+      <text class="usertxt">2.请输入密码 6-15字符</text>
+    <input class="required-input" name="password" placeholder="请输入密码" password="true"/>
+  </view>
+  <view class="input">
+    <text class="usertxt">3.请再输入密码 6-15字符</text>
+    <input class="required-input" name="password2" placeholder="请再输入密码" password="true"/>
+  </view>
+  <view class="input">
+    <text class="usertxt">4.问题1：5-10个字符用来找回密码</text>
+    <input class="required-input" name="find" placeholder="请输入" />
+  </view>
+  <view class="input">
+    <text class="usertxt">5.邀请码</text>
+    <input class="required-input" name="yqm" placeholder="请输入" />
+  </view>
+    <button class="login " form-type="submit" >注册</button>
+
+  </form>
+  
+</view>

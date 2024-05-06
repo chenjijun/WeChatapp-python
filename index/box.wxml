@@ -1,0 +1,71 @@
+<!--index/box.wxml-->
+<view class = "fullpage">
+<scroll-view class="scroll1" scroll-y="true" scroll-x="true" enable-flex="true" refresher-triggered="{{ true }}">
+<view class="addbox">
+  <input class="required-input" bindinput="inputChange" name="danhao" placeholder="请输入箱号名称" />
+  <button class="addboxbutton" bind:tap="addbox" hover-class="dianjixg" >添加箱号</button>
+</view>
+<button class="flashboxbutton" hover-class="dianjixg" bind:tap="getallbox" >获取箱号</button>
+<view class="addbox">
+<text>箱号</text>
+  <picker class="pickerclass" bindchange="bindPickerChange" value="{{index}}" range="{{allboxvalues}}">  
+    <input class="required-input" name="danhao" placeholder="选择箱号" value="{{allboxvalues[index]}}" />
+  </picker>  
+  <button class="addboxbutton" hover-class="dianjixg" bind:tap="saoMiao" >扫描入箱</button>
+</view>
+<view class="addbox">
+<button class="boxcon" hover-class="dianjixg" bind:tap="showview">设定箱重量</button>
+<button class="boxcon" hover-class="dianjixg" bind:tap="showboxxinxi">箱信息</button>
+<button class="boxcon" hover-class="dianjixg" bind:tap="xiangchuku">箱出库</button>
+</view>
+
+<view class='overlay' wx:if="{{showsetbox}}">
+
+<view class="setviewbox">
+<view><text class='toptext'>设定箱重:</text></view>
+  <text class='settext' >箱号：{{allboxvalues[index]}}</text>
+  <input class="required-input" bindinput="weightChange" name="weight" placeholder="请输入箱重量" />
+<text class='settext'>重量KG</text>
+<view class='enterquit'>
+<button bind:tap="setboxweight">确定</button>
+<button bind:tap="hideview">退出</button>
+</view>
+
+</view>
+</view>
+
+<view class='overlay' wx:if="{{showboxin}}">
+<view class="setviewbox">
+  <text class='settext' >箱号：{{allboxvalues[index]}}</text>
+  <view class="list">
+    <text class='infotext'>创建时间：{{boxinfo.creattime}}\n</text>
+    <text class='infotext'>重量：{{boxinfo.weight}}\n</text>
+    <text class='infotext'>状态：{{boxinfo.status}}\n</text>
+    <text class='infotext'>出库时间：{{boxinfo.chukushijian}}\n</text>
+    <text class='infotext'>箱内快递：\n</text>
+  <block   wx:for='{{boxinfo.danhao}}' wx:key='list' wx:for-item="item" wx:for-index="idx">
+  <view   class="list_item" >
+    <view class='xinxi'>单号：{{item}}</view>
+      
+  
+
+  </view>
+  </block>
+  
+</view>
+
+<view class='enterquit'>
+<button class="quitbutton" bind:tap="hideboxxinxi">退出</button>
+</view>
+
+</view>
+</view>
+
+
+
+
+
+
+
+</scroll-view>
+</view>
