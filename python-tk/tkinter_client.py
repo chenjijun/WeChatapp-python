@@ -6,48 +6,49 @@ from pyzbar.pyzbar import decode
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
-from tkinter import Menu,ttk,messagebox,filedialog
+from tkinter import Menu, ttk, messagebox, filedialog
 import datetime
 import requests
-import ceshihoutai,topview
+import tkinter_view
+import toplevel_view
 
 
-httpurl = 'x.x.x.x'
+http_url = 'x.x.x.x'
 jieMian = ceshihoutai.HoutaiceshiWidget()
 xiangxinxi = topview.xiangxinxi
 
 comboxlist = ['ID', '用户名', '货物类型', '快递公司', '单号', '物品信息', '状态', '联系号码', '备注', '添加时间', '入库时间',
               '出库时间', '箱号']
-alldingdan={}
-allbox=[]
-allboxinfo=[]
-url = f"http://{httpurl}/api/getviewvalue"
-statuschangeurl = f"http://{httpurl}/api/statuschange"
-getallboxurl = f"http://{httpurl}/api/getallbox"
-danhaotoboxurl = f"http://{httpurl}/api/danhaotobox"
-changelisturl = f"http://{httpurl}/api/houtaichangelist"
-adddingdanurl = f"http://{httpurl}/api/adddingdan"
-deldingdanurl = f"http://{httpurl}/api/deldingdan"
+add_order_value = {}
+all_box_value = []
+all_box_info = []
+main_url = f"http://{http_url}/api/getviewvalue"
+status_change_url = f"http://{http_url}/api/statuschange"
+get_all_box_url = f"http://{http_url}/api/getallbox"
+express_to_box_url = f"http://{http_url}/api/danhaotobox"
+changelisturl = f"http://{http_url}/api/houtaichangelist"
+add_order_url = f"http://{http_url}/api/adddingdan"
+del_order_url = f"http://{http_url}/api/deldingdan"
 headers = {
-      "Accept": "application/json, text/javascript, */*; q=0.01",
-      "Accept-Encoding": "gzip, deflate",
-      "Accept-Language": "zh-CN,zh;q=0.9",
-      "Connection": "keep-alive",
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-      "Authorization": "chenjijun123",
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      "X-Requested-With": "XMLHttpRequest"
+    "Accept": "application/json, text/javascript, */*; q=0.01",
+    "Accept-Encoding": "gzip, deflate",
+    "Accept-Language": "zh-CN,zh;q=0.9",
+    "Connection": "keep-alive",
+    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    "Authorization": "chenjijun123",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "X-Requested-With": "XMLHttpRequest"
 }
 
 addheaders = {
-      "Accept": "application/json, text/javascript, */*; q=0.01",
-      "Accept-Encoding": "gzip, deflate",
-      "Accept-Language": "zh-CN,zh;q=0.9",
-      "Connection": "keep-alive",
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-      "Authorization": "chenjijun",
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      "X-Requested-With": "XMLHttpRequest"
+    "Accept": "application/json, text/javascript, */*; q=0.01",
+    "Accept-Encoding": "gzip, deflate",
+    "Accept-Language": "zh-CN,zh;q=0.9",
+    "Connection": "keep-alive",
+    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    "Authorization": "chenjijun",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "X-Requested-With": "XMLHttpRequest"
 }
 
 
@@ -79,22 +80,25 @@ class SetBox(tk.Toplevel):
 
     def danhaotobox(self):
         if self.combobox2.get():
-            data = {'danhaotobox':{'danhao': self.danhao,'box':[self.combobox2.get()]}}
+            data = {'danhaotobox': {'danhao': self.danhao,
+                                    'box': [self.combobox2.get()]}}
             print(data)
-            response = requests.post(danhaotoboxurl, headers=headers, json=data, verify=False, timeout=5)
+            response = requests.post(
+                express_to_box_url, headers=headers, json=data, verify=False, timeout=5)
             res = response.json()
             if res['return'] == '添加成功':
                 selected_item = jieMian.treeview13.focus()
-                jieMian.treeview13.set(selected_item, 'column49', self.combobox2.get())
+                jieMian.treeview13.set(
+                    selected_item, 'column49', self.combobox2.get())
                 self.destroy()
-                messagebox.showinfo('成功','添加成功')
+                messagebox.showinfo('成功', '添加成功')
 
             else:
-                messagebox.showerror('错误','添加失败')
+                messagebox.showerror('错误', '添加失败')
 
 
 class SetOrder(tk.Toplevel):
-    def __init__(self, master=None,data=[],boxlist=[],selected_item='', tree='', **kw, ):
+    def __init__(self, master=None, data=[], boxlist=[], selected_item='', tree='', **kw, ):
         super(SetOrder, self).__init__(master, **kw)
 
         self.frame16 = ttk.Frame(self)
@@ -131,7 +135,7 @@ class SetOrder(tk.Toplevel):
         self.label14.configure(text='类型')
         self.label14.pack(side="left")
         self.combobox3 = ttk.Combobox(self.frame48)
-        self.combobox3.configure(values=['普通货','敏感货','书籍'])
+        self.combobox3.configure(values=['普通货', '敏感货', '书籍'])
         self.combobox3.pack(side="left")
         self.frame48.pack(ipady=5, side="top")
         self.frame49 = ttk.Frame(self.frame45)
@@ -164,7 +168,7 @@ class SetOrder(tk.Toplevel):
         self.label35.configure(text='状态')
         self.label35.pack(side="left")
         self.combobox4 = ttk.Combobox(self.frame52)
-        self.combobox4.configure(values=['未收货','已入库','已出库'])
+        self.combobox4.configure(values=['未收货', '已入库', '已出库'])
         self.combobox4.pack(side="left")
         self.frame52.pack(ipady=5, side="top")
         self.frame53 = ttk.Frame(self.frame45)
@@ -236,10 +240,10 @@ class SetOrder(tk.Toplevel):
         self.select_item = selected_item
         self.tree = tree
         self.alldata = data
-        self.allbox = ['None']
+        self.all_box_value = ['None']
         for i in boxlist:
-            self.allbox.append(i[0])
-        print(self.allbox)
+            self.all_box_value.append(i[0])
+        print(self.all_box_value)
         self.entry17.insert('0', data[0])
         self.entry18.insert('0', data[1])
         self.combobox3.set(data[2])
@@ -252,9 +256,8 @@ class SetOrder(tk.Toplevel):
         self.entry26.insert('0', data[9])
         self.entry27.insert('0', data[10])
         self.entry28.insert('0', data[11])
-        self.combobox5.config(values=self.allbox)
+        self.combobox5.config(values=self.all_box_value)
         self.combobox5.set(data[12])
-
 
         self.entry17.config(state='disabled')
         self.entry18.config(state='disabled')
@@ -263,35 +266,37 @@ class SetOrder(tk.Toplevel):
         self.button12.configure(command=lambda i='1': self.changetime(i))
         self.button13.configure(command=lambda i='2': self.changetime(i))
         self.button14.configure(command=lambda i='3': self.changetime(i))
-    def changetime(self,i):
+
+    def changetime(self, i):
         nowtime = str(datetime.datetime.now().replace(microsecond=0))
         if i == '1':
-            self.entry26.delete(0,'end')
-            self.entry26.insert(0,nowtime)
+            self.entry26.delete(0, 'end')
+            self.entry26.insert(0, nowtime)
         if i == '2':
-            self.entry27.delete(0,'end')
-            self.entry27.insert(0,nowtime)
+            self.entry27.delete(0, 'end')
+            self.entry27.insert(0, nowtime)
         if i == '3':
-            self.entry28.delete(0,'end')
-            self.entry28.insert(0,nowtime)
+            self.entry28.delete(0, 'end')
+            self.entry28.insert(0, nowtime)
+
     def submit(self):
-        afterchange = [self.entry17.get(),self.entry18.get(),self.combobox3.get(),self.entry20.get(),
-                       self.entry21.get(),self.entry22.get(),self.combobox4.get(),self.entry24.get(),
-                       self.entry25.get(),self.entry26.get(),self.entry27.get(),self.entry28.get(),
+        afterchange = [self.entry17.get(), self.entry18.get(), self.combobox3.get(), self.entry20.get(),
+                       self.entry21.get(), self.entry22.get(), self.combobox4.get(), self.entry24.get(),
+                       self.entry25.get(), self.entry26.get(), self.entry27.get(), self.entry28.get(),
                        self.combobox5.get()]
         if afterchange == list(self.alldata):
-            messagebox.showerror('错误','数据相同，未修改',parent=self)
+            messagebox.showerror('错误', '数据相同，未修改', parent=self)
         else:
-            data={'houtairequest':{'list':afterchange}}
-            response = requests.post(changelisturl, headers=headers, json=data, verify=False, timeout=5)
+            data = {'houtairequest': {'list': afterchange}}
+            response = requests.post(
+                changelisturl, headers=headers, json=data, verify=False, timeout=5)
             res = response.json()
 
-
             if res['return'] == '修改成功':
-                self.tree.item(self.select_item,values=afterchange)
-                messagebox.showinfo('成功','修改成功')
+                self.tree.item(self.select_item, values=afterchange)
+                messagebox.showinfo('成功', '修改成功')
             else:
-                messagebox.showerror('错误','修改失败')
+                messagebox.showerror('错误', '修改失败')
 
 
 class adddingdan(tk.Toplevel):
@@ -323,7 +328,7 @@ class adddingdan(tk.Toplevel):
         self.label45.configure(text='类型')
         self.label45.pack(side="left")
         self.combobox6 = ttk.Combobox(self.frame67)
-        self.combobox6.configure(values=['普通货','敏感货','书籍'])
+        self.combobox6.configure(values=['普通货', '敏感货', '书籍'])
         self.combobox6.pack(side="left")
         self.frame67.pack(ipady=5, side="top")
         self.frame68 = ttk.Frame(self.frame64)
@@ -378,10 +383,10 @@ class adddingdan(tk.Toplevel):
         self.frame61.pack_propagate(0)
         self.configure(height=200, relief="raised", width=200)
 
-
         def checktxm(self):
             file_path = filedialog.askopenfilename(title="选择图片文件",
-                                                   filetypes=(("Image files", "*.jpg;*.png"), ("all files", "*.*")),
+                                                   filetypes=(
+                                                       ("Image files", "*.jpg;*.png"), ("all files", "*.*")),
                                                    parent=self)
 
             if file_path:
@@ -392,22 +397,22 @@ class adddingdan(tk.Toplevel):
                 if decoded_objects:
                     danhao = decoded_objects[0].data.decode('utf-8')
                     print(danhao)
-                    self.entry33.delete(0,'end')
-                    self.entry33.insert(0,danhao)
-
-
+                    self.entry33.delete(0, 'end')
+                    self.entry33.insert(0, danhao)
 
         def submit(self):
             self.requestdata = {'user': self.entry31.get(), 'leixing': self.combobox6.get(), 'kdgs': self.entry32.get(),
                                 'danhao': self.entry33.get(), 'lxhm': self.entry34.get(), 'wpxx': self.entry35.get(),
                                 'beizhu': self.entry36.get()}
-            yesorno = messagebox.askyesno('确认', '确认提交订单？',parent=self)
+            yesorno = messagebox.askyesno('确认', '确认提交订单？', parent=self)
             if yesorno:
                 try:
-                    respone = requests.post(adddingdanurl, headers=addheaders, json=self.requestdata, verify=False, timeout=5)
+                    respone = requests.post(
+                        add_order_url, headers=addheaders, json=self.requestdata, verify=False, timeout=5)
                     res = respone.json()
                     if res['return'] == '添加成功':
-                        jieMian.treeview13.insert('',0,values=list(res['values'][0]))
+                        jieMian.treeview13.insert(
+                            '', 0, values=list(res['values'][0]))
                         messagebox.showinfo('成功', '添加成功')
                     elif res['return'] == '用户名不存在':
                         messagebox.showerror('错误', '用户名不存在')
@@ -416,48 +421,49 @@ class adddingdan(tk.Toplevel):
                 except Exception as e:
                     messagebox.showerror('错误', f'服务器连接错误{e}')
 
-
         self.button19.configure(command=lambda: submit(self))
         self.button20.configure(command=lambda: checktxm(self))
 
 
-
-
 def viewboxvalue():
-    for i in allbox:
-        print(i)
-        jieMian.treeview4.insert('',0,values=i)
-    for i in allboxinfo:
-        print(i)
-        jieMian.treeview3.insert('',0,values=i)
+    try:
+        for i in all_box_value:
+            print(i)
+            jieMian.treeview4.insert('', 0, values=i)
+        for i in all_box_info:
+            print(i)
+            jieMian.treeview3.insert('', 0, values=i)
+    except Exception as e:
+        messagebox.showerror('错误', f'数据错误{e}')
 
 
-
-def plot_bar_chart():
-    global alldingdan
-    global allbox
-    global allboxinfo
+def get_all_values():
+    global add_order_value
+    global all_box_value
+    global all_box_info
 
     data = {'houtairequest': {'request': 'historydingdan'}}
     try:
-        response = requests.post(url, headers=headers, json=data, verify=False,timeout=5)
-        alldingdan = response.json()
-        print(222,alldingdan)
+        response = requests.post(
+            main_url, headers=headers, json=data, verify=False, timeout=5)
+        add_order_value = response.json()
+        print(222, add_order_value)
         print(1)
-        allbox = alldingdan['allbox']
-        allboxinfo = alldingdan['boxinfo']
+        all_box_value = add_order_value['all_box_value']
+        all_box_info = add_order_value['boxinfo']
         order_by_day()
-
 
     except Exception as e:
         messagebox.showerror('错误', f'服务器连接错误{e}')
 
-def zhuyethread():
+
+def view_all_data_thread():
     if jieMian.label33['text'] == '运行中':
-        messagebox.showerror('错误','获取中，请稍等！！！')
+        messagebox.showerror('错误', '获取中，请稍等！！！')
     else:
-        t = threading.Thread(target=plot_bar_chart)
+        t = threading.Thread(target=get_all_values)
         t.start()
+
 
 def clear_widgets(*args):
     for widget in args:
@@ -475,7 +481,7 @@ def order_by_day():
     threecanvas = jieMian.canvas7
 
     clear_widgets(canvas, secanvas, threecanvas, jieMian.treeview1, jieMian.treeview2, jieMian.treeview12,
-                  jieMian.treeview13,jieMian.treeview3,jieMian.treeview4)
+                  jieMian.treeview13, jieMian.treeview3, jieMian.treeview4)
 
     viewboxvalue()
     today = datetime.date.today()
@@ -484,7 +490,7 @@ def order_by_day():
     date_rk = {label: [] for label in date_labels}
     date_ck = {label: [] for label in date_labels}
 
-    for i in alldingdan['values']:
+    for i in add_order_value['values']:
         jieMian.treeview13.insert('', 0, values=i)
         for label in date_labels:
             if label in i[9]:
@@ -494,20 +500,21 @@ def order_by_day():
                 if '已出库' in i[6]:
                     date_ck[label].append(i)
 
-    jieMian.label32.configure(text='订单总量：{}个'.format(len(alldingdan['values'])))
+    jieMian.label32.configure(
+        text='订单总量：{}个'.format(len(add_order_value['values'])))
 
     data_dd = [len(date_dd[label]) for label in date_labels]
     fig = plt.Figure(figsize=(5, 5), dpi=80)
     ax = fig.add_subplot(111)
     bars = ax.bar(date_labels, data_dd)
     for bar, value in zip(bars, data_dd):
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), value, ha='center', va='bottom')
+        ax.text(bar.get_x() + bar.get_width() / 2,
+                bar.get_height(), value, ha='center', va='bottom')
 
     canvasone = FigureCanvasTkAgg(fig, master=canvas)
     canvasone.draw()
     canvasone.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
     canvasone.get_tk_widget().configure(height=300, relief="raised", width=350)
-
 
     fig = plt.Figure(figsize=(5, 5), dpi=80)
     ax = fig.add_subplot(111)
@@ -515,13 +522,13 @@ def order_by_day():
     data_rk = [len(date_rk[label]) for label in date_labels]
     bars = ax.bar(date_labels, data_rk)
     for bar, value in zip(bars, data_rk):
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), value, ha='center', va='bottom')
+        ax.text(bar.get_x() + bar.get_width() / 2,
+                bar.get_height(), value, ha='center', va='bottom')
 
     canvastwo = FigureCanvasTkAgg(fig, master=secanvas)
     canvastwo.draw()
     canvastwo.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
     canvastwo.get_tk_widget().configure(height=300, relief="raised", width=350)
-
 
     fig = plt.Figure(figsize=(5, 5), dpi=80)
     ax = fig.add_subplot(111)
@@ -530,7 +537,8 @@ def order_by_day():
 
     bars = ax.bar(date_labels, data_ck)
     for bar, value in zip(bars, data_ck):
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), value, ha='center', va='bottom')
+        ax.text(bar.get_x() + bar.get_width() / 2,
+                bar.get_height(), value, ha='center', va='bottom')
 
     threecanvas = FigureCanvasTkAgg(fig, master=threecanvas)
     threecanvas.draw()
@@ -540,8 +548,6 @@ def order_by_day():
     jieMian.label1.configure(text='近5天提交的订单总量：{}个'.format(sum(data_dd)))
     jieMian.label3.configure(text='近5天入库的订单总量：{}个'.format(sum(data_rk)))
     jieMian.label8.configure(text='近5天出库的订单总量：{}个'.format(sum(data_ck)))
-
-
 
     for label in date_labels:
         for i in date_rk[label]:
@@ -556,7 +562,7 @@ def order_by_day():
     treeviewsort()
 
     jieMian.label33.configure(text='获取成功')
-    messagebox.showinfo('成功','获取数据成功')
+    messagebox.showinfo('成功', '获取数据成功')
 
 
 def order_by_month():
@@ -583,7 +589,7 @@ def order_by_month():
     date_rk = {label: [] for label in date_labels}
     date_ck = {label: [] for label in date_labels}
 
-    for i in alldingdan['values']:
+    for i in add_order_value['values']:
 
         for label in date_labels:
             if label in i[9]:
@@ -599,7 +605,8 @@ def order_by_month():
     ax = fig.add_subplot(111)
     bars = ax.bar(date_labels, data_dd)
     for bar, value in zip(bars, data_dd):
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), value, ha='center', va='bottom')
+        ax.text(bar.get_x() + bar.get_width() / 2,
+                bar.get_height(), value, ha='center', va='bottom')
 
     for widget in canvas.winfo_children():
         widget.destroy()
@@ -619,7 +626,8 @@ def order_by_month():
 
     bars = ax.bar(date_labels, data_rk)
     for bar, value in zip(bars, data_rk):
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), value, ha='center', va='bottom')
+        ax.text(bar.get_x() + bar.get_width() / 2,
+                bar.get_height(), value, ha='center', va='bottom')
 
     canvastwo = FigureCanvasTkAgg(fig, master=secanvas)
     canvastwo.draw()
@@ -636,7 +644,8 @@ def order_by_month():
 
     bars = ax.bar(date_labels, data_ck)
     for bar, value in zip(bars, data_ck):
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), value, ha='center', va='bottom')
+        ax.text(bar.get_x() + bar.get_width() / 2,
+                bar.get_height(), value, ha='center', va='bottom')
 
     threecanvas = FigureCanvasTkAgg(fig, master=threecanvas)
     threecanvas.draw()
@@ -676,7 +685,8 @@ def popup(event):
         tree.focus(item_id)
         # 创建右键菜单
         popup_menu = Menu(tree, tearoff=0)
-        popup_menu.add_command(label="详细信息", command=lambda: show_selected_content(tree))
+        popup_menu.add_command(
+            label="详细信息", command=lambda: show_selected_content(tree))
         # 显示菜单
         popup_menu.tk_popup(event.x_root, event.y_root)
         # 如果没有点击在项上，则清除任何已存在的高亮，并不显示菜单
@@ -689,7 +699,7 @@ def show_selected_content(tree):
     selected_item = tree.focus()
     if selected_item:
         value = tree.item(selected_item, "values")
-        i = next(j for j in alldingdan['values'] if value[1] == j[4])
+        i = next(j for j in add_order_value['values'] if value[1] == j[4])
         print(i)
         xiangxinxi(data=i)
 
@@ -708,10 +718,14 @@ def dingdanpopup(event):
         tree.focus(item_id)
         # 创建右键菜单
         popup_menu = Menu(tree, tearoff=0)
-        popup_menu.add_command(label="修改", command=lambda: change_allvalue(tree))
-        popup_menu.add_command(label="修改状态->未收货", command=lambda i = '未收货': change_content(tree,i))
-        popup_menu.add_command(label="修改状态->已入库", command=lambda i = '已入库': change_content(tree,i))
-        popup_menu.add_command(label="修改状态->已出库", command=lambda i = '已出库': change_content(tree,i))
+        popup_menu.add_command(
+            label="修改", command=lambda: change_allvalue(tree))
+        popup_menu.add_command(
+            label="修改状态->未收货", command=lambda i='未收货': change_content(tree, i))
+        popup_menu.add_command(
+            label="修改状态->已入库", command=lambda i='已入库': change_content(tree, i))
+        popup_menu.add_command(
+            label="修改状态->已出库", command=lambda i='已出库': change_content(tree, i))
         popup_menu.add_command(label="修改箱号", command=lambda: change_box(tree))
         popup_menu.add_command(label="删除订单", command=lambda: del_order(tree))
         # 显示菜单
@@ -722,7 +736,7 @@ def dingdanpopup(event):
 
 
 def del_order(tree):
-    queren =  messagebox.askyesno(title='请确认',message='是否确认删除')
+    queren = messagebox.askyesno(title='请确认', message='是否确认删除')
     # 获取当前选中的项，并显示其文本内容
     if queren:
         selected_item = tree.focus()
@@ -733,21 +747,23 @@ def del_order(tree):
                 yesorno = 'no'
             else:
                 yesorno = value[4]
-            data = {'houtairequest': {'id': value[0],'delbox':yesorno}}
+            data = {'houtairequest': {'id': value[0], 'delbox': yesorno}}
             try:
-                response = requests.post(url=deldingdanurl,headers=headers,json=data,verify=False,timeout=5)
+                response = requests.post(
+                    main_url=del_order_url, headers=headers, json=data, verify=False, timeout=5)
                 res = response.json()
                 if res['return'] == '删除成功':
                     tree.delete(selected_item)
-                    messagebox.showinfo('成功','删除成功')
+                    messagebox.showinfo('成功', '删除成功')
                 else:
-                    messagebox.showerror('错误',f'删除失败{res["return"]}')
+                    messagebox.showerror('错误', f'删除失败{res["return"]}')
 
             except Exception as e:
                 messagebox.showerror('错误', '删除失败')
 
-def change_content(tree,i):
-    queren =  messagebox.askyesno(title='请确认',message=f'是否确认修改为{i}')
+
+def change_content(tree, i):
+    queren = messagebox.askyesno(title='请确认', message=f'是否确认修改为{i}')
     # 获取当前选中的项，并显示其文本内容
     if queren:
         selected_item = tree.focus()
@@ -755,23 +771,28 @@ def change_content(tree,i):
             value = tree.item(selected_item, "values")
             data = {'houtairequest': {'id': value[0], 'status': i}}
             try:
-                response = requests.post(statuschangeurl, headers=headers, json=data, verify=False,timeout=5)
+                response = requests.post(
+                    status_change_url, headers=headers, json=data, verify=False, timeout=5)
                 res = response.json()
                 print(res)
                 if res['return'] == '修改成功':
                     tree.set(selected_item, 'column43', i)
-                messagebox.showinfo('成功','修改成功')
+                messagebox.showinfo('成功', '修改成功')
             except Exception as e:
-                messagebox.showerror('错误',f'修改失败{e}')
+                messagebox.showerror('错误', f'修改失败{e}')
+
+
 def getboxfun():
     try:
         data = {'requestvalue': 'all'}
-        response = requests.post(getallboxurl, headers=headers, json=data, verify=False, timeout=5)
+        response = requests.post(
+            get_all_box_url, headers=headers, json=data, verify=False, timeout=5)
         res = response.json()
         print(res)
         return res
     except Exception as e:
         return e
+
 
 def change_box(tree):
     selected_item = tree.focus()
@@ -779,22 +800,24 @@ def change_box(tree):
         res = getboxfun()
         if res['return'] == '查询成功':
             value = tree.item(selected_item, "values")
-            danhao= value[4]
-            SetBox(danhao=danhao, boxlist= res['boxs'])
+            danhao = value[4]
+            SetBox(danhao=danhao, boxlist=res['boxs'])
         else:
-            messagebox.showerror('错误','获取箱号列表失败')
+            messagebox.showerror('错误', '获取箱号列表失败')
+
 
 def change_allvalue(tree):
     selected_item = tree.focus()
-    print(tree,selected_item)
+    print(tree, selected_item)
     if selected_item:
         value = tree.item(selected_item, "values")
         res = getboxfun()
         if res['return'] == '查询成功':
-            SetOrder(data=value, boxlist=list(res['boxs']), selected_item= selected_item,
-                      tree=tree)
+            SetOrder(data=value, boxlist=list(res['boxs']), selected_item=selected_item,
+                     tree=tree)
         else:
-            messagebox.showerror('错误','获取信息失败')
+            messagebox.showerror('错误', '获取信息失败')
+
 
 def sort_treeview(col, descending, j):
     if j == 'tone':
@@ -829,45 +852,52 @@ def treeviewsort():
 
     for i in ['column1', 'column2', 'column3']:
         j = 'tone'
-        jieMian.treeview1.heading(i, command=lambda c=i, j=j: on_header_click(c, j))
+        jieMian.treeview1.heading(
+            i, command=lambda c=i, j=j: on_header_click(c, j))
 
     for i in ['column4', 'column5', 'column6']:
         j = 'ttwo'
-        jieMian.treeview2.heading(i, command=lambda c=i, j=j: on_header_click(c, j))
+        jieMian.treeview2.heading(
+            i, command=lambda c=i, j=j: on_header_click(c, j))
 
     for i in ['column34', 'column35', 'column36']:
         j = 'tthree'
-        jieMian.treeview12.heading(i, command=lambda c=i, j=j: on_header_click(c, j))
+        jieMian.treeview12.heading(
+            i, command=lambda c=i, j=j: on_header_click(c, j))
 
-    for i in ['column37', 'column38', 'column39', 'column40', 'column41', 'column42', 'column43'
-              , 'column44', 'column45', 'column46', 'column47', 'column48', 'column49']:
+    for i in ['column37', 'column38', 'column39', 'column40', 'column41', 'column42', 'column43', 'column44', 'column45', 'column46', 'column47', 'column48', 'column49']:
         j = 'tfour'
-        jieMian.treeview13.heading(i, command=lambda c=i, j=j: on_header_click(c, j))
+        jieMian.treeview13.heading(
+            i, command=lambda c=i, j=j: on_header_click(c, j))
 
     for i in ['column7', 'column8', 'column9', 'column10', 'column11', 'column12']:
         j = 'tfive'
-        jieMian.treeview3.heading(i, command=lambda c=i, j=j: on_header_click(c, j))
+        jieMian.treeview3.heading(
+            i, command=lambda c=i, j=j: on_header_click(c, j))
     for i in ['column13', 'column14', 'column15', 'column16']:
         j = 'tsix'
-        jieMian.treeview4.heading(i, command=lambda c=i, j=j: on_header_click(c, j))
+        jieMian.treeview4.heading(
+            i, command=lambda c=i, j=j: on_header_click(c, j))
     for i in ['column17', 'column18', 'column19', 'column20', 'column21', 'column22', 'column23', 'column24']:
         j = 'tseven'
-        jieMian.treeview5.heading(i, command=lambda c=i, j=j: on_header_click(c, j))
+        jieMian.treeview5.heading(
+            i, command=lambda c=i, j=j: on_header_click(c, j))
+
 
 def huowuzt(o):
     n = 0
     jieMian.treeview13.delete(*jieMian.treeview13.get_children())
-    for i in alldingdan['values']:
+    for i in add_order_value['values']:
         if i[6] == o:
-            n+=1
-            jieMian.treeview13.insert('',0,values=i)
+            n += 1
+            jieMian.treeview13.insert('', 0, values=i)
     jieMian.label32.configure(text=f'订单总数:{n}')
 
 
 def reset_dd_treeview():
     n = 0
     jieMian.treeview13.delete(*jieMian.treeview13.get_children())
-    for i in alldingdan['values']:
+    for i in add_order_value['values']:
         n += 1
         jieMian.treeview13.insert('', 0, values=i)
     jieMian.label32.configure(text=f'订单总数:{n}')
@@ -884,33 +914,30 @@ def filter_more():
         jieMian.treeview13.delete(*jieMian.treeview13.get_children())
         for i in content:
             if mohuvalue in i[mohuindex]:
-                jieMian.treeview13.insert('',0,values=i)
+                jieMian.treeview13.insert('', 0, values=i)
 
     else:
-        messagebox.showerror('错误','请输入')
+        messagebox.showerror('错误', '请输入')
 
 
-
-
-
-zhuyethread()
+view_all_data_thread()
 
 
 jieMian.combobox1['values'] = comboxlist
-jieMian.treeview1.bind("<Button-3>",popup)
-jieMian.treeview2.bind("<Button-3>",popup)
-jieMian.treeview12.bind("<Button-3>",popup)
-jieMian.treeview13.bind("<Button-3>",dingdanpopup)
+jieMian.treeview1.bind("<Button-3>", popup)
+jieMian.treeview2.bind("<Button-3>", popup)
+jieMian.treeview12.bind("<Button-3>", popup)
+jieMian.treeview13.bind("<Button-3>", dingdanpopup)
 
-jieMian.button1.configure(command=zhuyethread)
-jieMian.button8.configure(command=zhuyethread)
-jieMian.button22.configure(command=zhuyethread)
+jieMian.button1.configure(command=view_all_data_thread)
+jieMian.button8.configure(command=view_all_data_thread)
+jieMian.button22.configure(command=view_all_data_thread)
 jieMian.button2.configure(command=order_by_day)
 jieMian.button3.configure(command=order_by_month)
 
-jieMian.button4.configure(command=lambda c = '未收货':huowuzt(c))
-jieMian.button5.configure(command=lambda c = '已入库':huowuzt(c))
-jieMian.button6.configure(command=lambda c = '已出库':huowuzt(c))
+jieMian.button4.configure(command=lambda c='未收货': huowuzt(c))
+jieMian.button5.configure(command=lambda c='已入库': huowuzt(c))
+jieMian.button6.configure(command=lambda c='已出库': huowuzt(c))
 jieMian.button7.configure(command=reset_dd_treeview)
 jieMian.button9.configure(command=filter_more)
 jieMian.button15.configure(command=adddingdan)
@@ -931,4 +958,3 @@ jieMian.treeview5.configure(yscrollcommand=jieMian.scrollbar5.set)
 jieMian.scrollbar1.config(command=jieMian.treeview3.yview)
 jieMian.treeview3.configure(yscrollcommand=jieMian.scrollbar1.set)
 jieMian.mainloop()
-
