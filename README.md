@@ -1,4 +1,4 @@
-一个简单的包裹登记程序（未完成），使用微信小程序做前端，python FASTAPI做后端，python tkinter做管理端
+一个简单的包裹登记程序（未完成），使用微信小程序做前端，python FASTAPI+UVICORN做后端，python tkinter做管理端，服务器使用 Oracle Always Free 1G/1核
 
  微信小程序端使用JavaScript，可注册账号密码进行登录OR调用微信OPENID自动创建账号一键登录
  
